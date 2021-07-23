@@ -1,6 +1,6 @@
 # https://samarpedro.github.io/pong/
 
-Ping pong javascript with bots
+Ping pong in javascript with bots
 
 to play with bots, use "bot" in the player name
 
