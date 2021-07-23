@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Ping pong</title>
+    <style>
+      canvas {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        background-color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="1000" height="600"></canvas>
+    <script type="text/javascript">
+
+      //variaveis
+      var canvas = document.getElementById("canvas"),
+      ctx = canvas.getContext("2d"),
+
+      keys = {},
+
+      ball = {
+        x: canvas.width / 2 - 15,
+        y: canvas.height / 2 - 15,
+        height: 30,
+        width: 30,
+        dirx: -1,
+        diry: 0,
+        accelerate: 0,
+        speed: 8,
+      },
+
+      player1 = {
+        x: 10,
+        y: canvas.height / 2 - 60,
+        height: 120,
+        width: 30,
+        score: 0,
+        speed: 10,
+        name: "player 1",
+      },
+
+      player2 = {
+        x: canvas.width - 40,
+        y: canvas.height / 2 - 60,
+        height: 120,
+        width: 30,
+        score: 0,
+        speed: 10,
+        name: "player 2",
+      };
+
+      //Controles
+      document.addEventListener("keydown", function(e) {
+        keys[e.keyCode] = true;
+      });
+
+      document.addEventListener("keyup", function(e) {
+        delete keys[e.keyCode];
+      });
+
+      function movement() {
+        if (87 in keys && player1.y > 0)
+          player1.y -= player1.speed;
+        if (83 in keys && player1.y + player1.height < canvas.height)
+          player1.y += player1.speed;
+        if (38 in keys && player2.y > 0)
+          player2.y -= player2.speed;
+        if (40 in keys && player2.y + player2.height < canvas.height)
+          player2.y += player2.speed;
+      };
+
+      function dball() {
+        if (ball.y + ball.height >= player1.y && ball.y <= player1.y + player1.height && ball.x <= player1.x + player1.width) {
+          ball.dirx = 1;
+          ball.diry = Math.random() * (0.75 - -0.75) + -0.75;
+          ball.accelerate += 0.5;
+        }
+        else if (ball.y + ball.height >= player2.y && ball.y <= player2.y + player2.height && ball.x + ball.width >= player2.x) {
+          ball.dirx = -1;
+          ball.diry = Math.random() * (0.75 - -0.75) + -0.75;
+          ball.accelerate += 0.5;
+        }
+
+        /* if (ball.diry == 0)
+            ball.diry = -1 + (3 * Math.random()); */
+        if (ball.y <= 0)
+          ball.diry = Math.abs(ball.diry);
+        if (ball.y + ball.height >= canvas.height) {
+          ball.diry = -ball.diry;
+          ball.y -= ball.speed;
+        };
+
+        if (ball.accelerate > 15)
+          ball.accelerate = 15;
+
+        ball.x += (ball.speed + ball.accelerate) * ball.dirx;
+        ball.y += (ball.speed + ball.accelerate) * ball.diry;
+
+        //player1.y = ball.y - (player1.height/2);
+
+        if (ball.x < player1.x)
+          newgame("player2");
+        else if(ball.x + ball.width > player2.x + player2.width)
+          newgame("player1");
+      };
+
+      function bot1() {
+        if (player1.y < ball.y - ball.height && player1.y + player1.height < canvas.height && ball.x - 15 < (canvas.width / 2) + 200)
+          player1.y += player1.speed;
+        if (player1.y + player1.height > ball.y + ball.height*2 && player1.y > 0 && ball.x - 15 < (canvas.width / 2) + 200)
+          player1.y -= player1.speed;
+      };
+
+      function bot2() {
+        if (player2.y < ball.y - ball.height && player2.y + player2.height < canvas.height && ball.x - 15 > (canvas.width / 2) - 200)
+          player2.y += player2.speed;
+        if (player2.y + player2.height > ball.y + ball.height*2 && player2.y > 0 && ball.x - 15 > (canvas.width / 2) - 200)
+          player2.y -= player2.speed;
+      };
+
+      function newgame(winner) {
+        if (winner == "player1") {
+          player1.score++;
+          //alert(player1.name + " ganhou!");
+        }
+        else {
+          player2.score++;
+          //alert(player2.name + " ganhou!");
+        }
+
+        player1.y = canvas.height /2 - 60;
+        player2.y = canvas.height /2 - 60;
+        ball.y = canvas.height /2 - 15;
+        ball.x = canvas.width /2 - 15;
+        ball.accelerate = 0;
+        ball.diry = 0;
+      };
+
+      function boton() {
+        if (player1.name == "bot")
+          bot1();
+        if (player2.name == "bot")
+          bot2();
+      };
+
+      //Desenhar
+      function print() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        movement();
+        dball();
+        boton();
+
+        ctx.fillStyle = "orange";
+        ctx.fillRect(player1.x, player1.y, player1.width, player1.height);
+        ctx.fillStyle = "cyan";
+        ctx.fillRect(player2.x, player2.y, player2.width, player2.height);
+        ctx.fillStyle = "white";
+        ctx.fillRect(ball.x, ball.y, ball.width, ball.height);
+
+        ctx.font = "20px Arial";
+        ctx.fillText(player1.name + ": " + player1.score, 50, 30);
+        ctx.fillText(player2.name + ": " + player2.score, canvas.width - 150, 30);
+
+        window.requestAnimationFrame(print);
+      };
+
+      player1.name = (prompt("Player 1 name"));
+      player2.name = (prompt("Player 2 name"));
+
+      print();
+    </script>
+  </body>
+</html>
