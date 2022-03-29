@@ -1,9 +1,9 @@
 # https://samarpedro.github.io/pong/
 
-Ping pong in javascript with bots
+Pong in javascript with bots
 
-to play with bots, use "bot" in the player name
+To play with bots use "bot" in the player name
 
-player 1 controls: W and S
+Player 1 controls: W and S
 
 Player 2 controls: Arrow up and Arrow down
