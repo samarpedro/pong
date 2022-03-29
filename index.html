@@ -158,12 +158,12 @@
         dball();
         boton();
 
+        ctx.fillStyle = "white";
+        ctx.fillRect(ball.x, ball.y, ball.width, ball.height);
         ctx.fillStyle = "orange";
         ctx.fillRect(player1.x, player1.y, player1.width, player1.height);
         ctx.fillStyle = "cyan";
         ctx.fillRect(player2.x, player2.y, player2.width, player2.height);
-        ctx.fillStyle = "white";
-        ctx.fillRect(ball.x, ball.y, ball.width, ball.height);
 
         ctx.font = "20px Arial";
         ctx.fillText(player1.name + ": " + player1.score, 50, 30);
