@@ -11,7 +11,12 @@
         left: 0;
         right: 0;
         margin: auto;
-        background-color: black;
+        background: rgb(32,31,55);
+        background: radial-gradient(circle, rgba(32,31,55,1) 0%, rgba(5,5,9,1) 100%);
+        border-style: solid;
+        border-color: gray;
+        border-width: 10px;
+
       }
     </style>
   </head>
@@ -158,12 +163,12 @@
         dball();
         boton();
 
-        ctx.fillStyle = "white";
-        ctx.fillRect(ball.x, ball.y, ball.width, ball.height);
         ctx.fillStyle = "orange";
         ctx.fillRect(player1.x, player1.y, player1.width, player1.height);
         ctx.fillStyle = "cyan";
         ctx.fillRect(player2.x, player2.y, player2.width, player2.height);
+        ctx.fillStyle = "white";
+        ctx.fillRect(ball.x, ball.y, ball.width, ball.height);
 
         ctx.font = "20px Arial";
         ctx.fillText(player1.name + ": " + player1.score, 50, 30);
